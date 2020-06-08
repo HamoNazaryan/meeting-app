@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="/static/libs/MaterializeCss_alt/materialize.css"> -->
+    <link rel="stylesheet" href="/static/libs/MaterializeCss_1.0.0/materialize.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    
+    {% if title %}
+      <title>{{ title }}</title>
+    {% else %}
+      <title>Meeting application</title>
+    {% endif %}
+  </head>
+  <body>
+
+    <!-- <div class="preloader-background">
+      <div class="preloader-wrapper big active">
+        <div class="spinner-layer spinner-blue-only">
+          <div class="circle-clipper left">
+            <div class="circle"></div>
+          </div>
+          <div class="gap-patch">
+            <div class="circle"></div>
+          </div>
+          <div class="circle-clipper right">
+            <div class="circle"></div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="flash-block alert {{ category }}"> <p>{{ message|capitalize }}</p> <i class="material-icons">close</i> </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+
+
+{%block nav%}
+
+{% if isIndex %}
+      <ul id="slide-out" class="sidenav">
+        <li><div class="user-view">
+          <div class="background">
+            <!-- <img src="/static/img/office.jpg"> -->
+          </div>
+          <div class="circle user-img" style="background-image: url({{image_file}})"> </div>
+          <span class=" name">{{current_user.fname}} {{current_user.lname}}</span>
+          <span class="email">{{current_user.email}}</span>
+        </div></li>
+        
+
+        {% if url_for(request.endpoint) != "/home" %}
+        <li><a href="{{url_for('main.index')}}" class="waves-effect"><i class="material-icons">event_note</i>All reserved meetings</a></li>
+        {% endif %}
+
+        {% if url_for(request.endpoint) != "/user_reserves" %}
+          <li><a href="{{url_for('users.user_reserves', id=current_user.id)}}" class="waves-effect"><i class="material-icons">date_range</i>My reserved meetings</a></li>
+        {% endif %} 
+
+      
+
+        {% if url_for(request.endpoint) != "/reserve/new" %}
+        <li><a class="waves-effect" href="{{url_for('meetings.reserve_new')}}"><i class="material-icons">event</i>Add meeting</a></li>
+        {% endif %}
+
+        {% if url_for(request.endpoint) != "/archive" %}
+        <li><a class="waves-effect" href="{{url_for('meetings.archive')}}"><i class="material-icons">event_busy</i>Archive</a></li>
+        {% endif %}
+
+        {% if url_for(request.endpoint) != "/account" %}
+          <li><a class="waves-effect" href="{{url_for('users.account')}}" ><i class="material-icons">perm_identity</i>Account</a></li>
+        {% endif %}
+
+        {% if ((url_for(request.endpoint) != "/users") and  current_user.usertype == "admin") %}
+        <li><a href="{{url_for('users.reg_users')}}" class="waves-effect"><i class="material-icons">people_outline</i>Registered users</a></li>
+        {% endif %}
+
+        <li><div class="divider"></div></li>
+        <!-- <li><a class="subheader">Subheader</a></li> -->
+        <li><a class="waves-effect" href="{{url_for('users.logout')}}"><i class="material-icons">exit_to_app</i> Log out</a></li>
+
+      </ul>
+      <div class="menu-wrapper">
+          <a href="#" data-target="slide-out" class="sidenav-trigger btn-floating btn-large"><i class="material-icons">menu</i></a>
+      </div>
+
+
+    {% endif %}
+  {% endblock %}
+
+
+
+
+
+
+    {% block content %}    {% endblock %}
+
+
+    <script src="/static/libs/JQuery/jquery.min.js"></script>
+    <script src="/static/libs/MaterializeCss_1.0.0/materialize.js"></script>
+    <!-- <script src="/static/libs/MaterializeCss_alt/materialize.js"></script> -->
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
+    <script src="/static/js/script.js"></script>
+  </body>
+</html>

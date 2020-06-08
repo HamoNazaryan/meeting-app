@@ -1,0 +1,136 @@
+{%extends "layout.html"%}
+
+
+{% block content %}
+
+<div class="wrap account">
+<h2>Account info</h2>
+<div class="row">
+  <div class="col m3 s4" >
+      <div class="profile-img-wrapper">
+        <div class="user-img circle" style="background-image: url({{image_file}})"></div>
+      </div>         
+  </div>
+  <div class="col m9 s8">
+    <div class="user-info">
+      <p> {{current_user.fname}} {{current_user.lname}} </p>
+      <p>{{current_user.email}}</p>
+    </div>
+  </div> 
+</div>
+
+<div class="row">
+  <div class="margin-top">
+     <form  method="Post" action="" autocomplete="off" enctype="multipart/form-data">
+       {{ form.hidden_tag() }}
+
+       <div class="top-row">
+      <div class="field-wrap">
+        {{form.fname.label(class="req")}}
+       
+        {% if form.fname.errors %}
+          {{form.fname(class="validate invalid length", minlength="2", maxlength="60", data_length="60")}}
+              {% for  error in form.fname.errors %}
+              <span class="helper-text"  data-error="{{error}}"></span>
+              {% endfor %}
+
+          {% else %}
+          {{form.fname(class="validate length",minlength="2", maxlength="60", data_length="60")}}
+          <span class="helper-text"  data-error="Field must be between 2 and 60 characters long."></span>
+        {% endif %}        
+      </div>
+
+
+      <div class="field-wrap">
+        {{form.lname.label(class="req")}}
+       
+        {% if form.lname.errors %}
+          {{form.lname(class="validate invalid length",minlength="2", maxlength="60", data_length="60")}}
+              {% for  error in form.lname.errors %}
+              <span class="helper-text"  data-error="{{error}}"></span>
+              {% endfor %}
+
+          {% else %}
+          {{form.lname(class="validate length" ,minlength="2", maxlength="60", data_length="60")}}
+          <span class="helper-text"  data-error="Field must be between 2 and 60 characters long."></span>
+        {% endif %}        
+      </div>
+
+       </div>
+
+      <div class="field-wrap">
+       
+        {{form.email.label(class="req")}}
+
+        {% if form.email.errors %}
+          {{form.email(class="validate invalid")}}
+            {% for  error in form.email.errors %}                
+                <span class="helper-text" data-error="{{error}}" ></span>
+              {% endfor %}            
+          {% else %}
+          {{form.email(class="validate", type="email")}}
+          <span class="helper-text" data-error="Invalid email address" ></span>
+        {% endif %}              
+      </div>
+
+
+      <div class="file-field input-field">
+        <div class="btn file-button">
+          <span>File</span>
+          {{form.picture}}
+        </div>
+        <div class="file-path-wrapper">      
+          {% if form.picture.errors %}
+            {% for error in form.picture.errors %}
+            <input class="file-path validate invalid" type="text" placeholder="Update profile picture">
+            <span class="helper-text" data-error="{{error}}" ></span>
+            {% endfor %}
+          {% else %}
+          <input class="file-path validate" type="text" placeholder="Update profile picture">
+          {% endif %}
+
+        </div>
+      </div>
+
+      <div class="field-wrap">
+        {{form.password.label(class="account-label")}}
+        
+        {% if form.password.errors %}
+          {{form.password(class="validate invalid", id="passLogin",minlength="6", maxlength="60")}}
+            {% for  error in form.password.errors %}                
+                <span class="helper-text" data-error="{{error}}" ></span>
+            {% endfor %}            
+        {% else %}
+            {{form.password(class="validate",minlength="6",maxlength="60",data_length="60")}}
+            <span class="helper-text" data-error="Field must be between 6 and 60 characters long." ></span>
+        {% endif %}
+        
+      </div>
+
+      <div class="field-wrap">
+        {{form.confirm_password.label(class="account-label")}}
+
+        {% if form.confirm_password.errors %}
+        {{form.confirm_password(class="validate invalid", minlength="6",maxlength="60",data_length="60")}}
+          {% for  error in form.confirm_password.errors %}                
+              <span class="helper-text" data-error="{{error}}" ></span>
+          {% endfor %}            
+      {% else %}
+          {{form.confirm_password(class="validate signupConfimPass", minlength="6",maxlength="60", data_length="60")}}
+          <span class="helper-text" data-error="Field must be equal to password." ></span>
+      {% endif %}        
+
+      </div>
+        <div class="field-wrap margin-top">
+          <!-- <script>alert($(input[type='file']).val())</script> -->
+          {{form.submit(class="button button-block")}}
+        </div>
+    </form>
+
+
+</div>
+<div class="fixed-button-wrapper">
+  <a class="btn-floating btn-large" href="{{url_for('main.index')}}"><i class="material-icons">home</i></a>
+</div>
+</div>
+{% endblock content %}

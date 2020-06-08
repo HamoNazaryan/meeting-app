@@ -1,0 +1,45 @@
+{%extends "layout.html"%}
+
+
+{% block content %}
+<div class="wrap">
+<h2>Your reserved meetings</h2>
+<div id="shedule">
+ <ul class="collection">
+
+{# {% for meeting in meetings %} #}
+    <li class="collection-item avatar">
+
+      <div class="img-wrapper circle">
+        <div class="img " style="background-image: url({{url_for('static', filename='img/'+meeting.author.image_file, )}})"></div>
+      </div>
+
+      <span class="title5 collection-title">Create: </span> <a href="#"></a>{{meeting.author.fname}} {{meeting.author.lname}}</a> <span class="small-text">{{meeting.created_date.strftime('%d %b %Y')}}</span>
+      <!-- <p class="divider"></p> -->
+      
+      <p>
+        <span class="collection-title">Room:</span>    {{meeting.room}} 
+        <p class="divider"></p>
+        <span class="collection-title">Employee:</span> {{meeting.employee}} 
+        <p class="divider"></p>
+        
+        {% if meeting.end_date %}
+          <span class="collection-title">Date:</span> <span class="date">{{ meeting.start_date.strftime('%d %b %Y')}} - 
+          {{meeting.end_date.strftime('%d %b %Y')}} </span>
+        {% else %}
+        <span class="date"> {{ meeting.start_date.strftime('%d %b %Y')}}</span>
+        {% endif %}
+        <p class="divider"></p>
+        <span class="collection-title">Daily schedule:</span> <span class="date">{{meeting.start_time.strftime('%H:%M')}}-{{meeting.end_time.strftime('%H:%M')}}</span>
+      </p>
+     
+      <a href="#!" class="secondary-content"><i class="material-icons">close</i></a>    
+    </li>
+
+   {# {%endfor%} #}
+
+  </ul>
+
+</div>
+</div>
+{% endblock %}

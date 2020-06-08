@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+
+{% block content %}
+<div class="wrap">
+   <div id="reset_block">
+
+    <h1>Reset password</h1>
+     <form  method="Post" action="" autocomplete="off">
+       {{ form.hidden_tag() }} 
+
+       <div class="field-wrap">
+        {{form.password.label(class="req")}}
+        
+        {% if form.password.errors %}
+          {{form.password(class="validate invalid", minlength="6", maxlength="60", data_length="60")}}
+            {% for  error in form.password.errors %}                
+                <span class="helper-text" data-error="{{error}}" ></span>
+            {% endfor %}            
+        {% else %}
+            {{form.password(class="validate", minlength="6",maxlength="60", data_length="60")}}
+            <span class="helper-text" data-error="Field must be between 6 and 60 characters long." ></span>
+        {% endif %}        
+        
+      </div>
+      <div class="field-wrap">
+        {{form.confirm_password.label(class="req")}}
+
+        {% if form.confirm_password.errors %}
+        {{form.confirm_password(class="validate invalid", minlength="6",maxlength="60",data_length="60")}}
+          {% for  error in form.confirm_password.errors %}                
+              <span class="helper-text" data-error="{{error}}" ></span>
+          {% endfor %}            
+      {% else %}
+          {{form.confirm_password(class="validate", minlength="6",maxlength="60", data_length="60")}}
+          <span class="helper-text" data-error="Field must be equal to password." ></span>
+      {% endif %}        
+
+      </div>
+      <div class="field-wrap add-margin">
+        {{form.submit(class="button button-block")}}
+        
+      </div>
+        
+    </form>
+  
+</div>
+
+</div>
+{% endblock %}

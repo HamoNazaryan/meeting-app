@@ -1,0 +1,130 @@
+{% extends "layout.html" %}
+
+
+{% block content %}
+
+<div class="wrap">
+
+<div class="signup"  >
+
+  <!-- <ul class="tab-group">
+    <li class="tab active"><a href="#signup">Sign Up</a></li>
+    <li class="tab "><a href="#signin">Sign In</a></li>  
+  </ul> -->
+
+  <div class="tab-content">
+   <div id="signup">
+
+    <h1>Sign Up</h1>
+     <form  method="Post" action="" autocomplete="off" >
+       {{ form.hidden_tag() }}
+
+       <div class="top-row">
+      <div class="field-wrap">
+        {{form.fname.label(class="req")}}
+       
+        {% if form.fname.errors %}
+          {{form.fname(class="validate invalid length", minlength="2", maxlength="60", data_length="60")}}
+              {% for  error in form.fname.errors %}
+              <span class="helper-text"  data-error="{{error}}"></span>
+              {% endfor %}
+
+          {% else %}
+          {{form.fname(class="validate length",minlength="2", maxlength="60", data_length="60")}}
+          <span class="helper-text"  data-error="Field must be between 2 and 60 characters long."></span>
+        {% endif %}        
+      </div>
+
+
+      <div class="field-wrap">
+        {{form.lname.label(class="req")}}
+       
+        {% if form.lname.errors %}
+          {{form.lname(class="validate invalid length",minlength="2", maxlength="60", data_length="60")}}
+              {% for  error in form.lname.errors %}
+              <span class="helper-text"  data-error="{{error}}"></span>
+              {% endfor %}
+
+          {% else %}
+          {{form.lname(class="validate length" ,minlength="2", maxlength="60", data_length="60")}}
+          <span class="helper-text"  data-error="Field must be between 2 and 60 characters long."></span>
+        {% endif %}        
+      </div>
+
+       </div>
+
+      <div class="field-wrap">
+       
+        {{form.email.label(class="req")}}
+
+        {% if form.email.errors %}
+          {{form.email(class="validate invalid")}}
+            {% for  error in form.email.errors %}                
+                <span class="helper-text" data-error="{{error}}" ></span>
+              {% endfor %}            
+          {% else %}
+          {{form.email(class="validate", type="email")}}
+          <span class="helper-text" data-error="Invalid email address" ></span>
+        {% endif %}              
+      </div>
+      <!-- <div class="top-row add-margin"> -->
+        <div class="field-wrap">
+          {{form.password.label(class="req")}}
+          
+          {% if form.password.errors %}
+            {{form.password(class="validate invalid signupPass", minlength="6", maxlength="60", data_length="60")}}
+              {% for  error in form.password.errors %}                
+                  <span class="helper-text" data-error="{{error}}" ></span>
+              {% endfor %}            
+          {% else %}
+              {{form.password(class="validate signupPass",minlength="6",maxlength="60", data_length="60")}}
+              <span class="helper-text" data-error="Field must be between 6 and 20 characters long." ></span>
+          {% endif %}        
+          
+        </div>
+        <div class="field-wrap">
+          {{form.confirm_password.label(class="req")}}
+
+          {% if form.confirm_password.errors %}
+          {{form.confirm_password(class="validate invalid signupConfimPass", minlength="6",maxlength="60",data_length="60")}}
+            {% for  error in form.confirm_password.errors %}                
+                <span class="helper-text" data-error="{{error}}" ></span>
+            {% endfor %}            
+        {% else %}
+            {{form.confirm_password(class="validate signupConfimPass", minlength="6",maxlength="60", data_length="60")}}
+            <span class="helper-text" data-error="Field must be equal to password." ></span>
+        {% endif %}        
+
+        </div>
+      <!-- </div> -->
+      <div class="field-wrap ">
+
+
+      </div>
+      
+        <div class="field-wrap margin-top">
+          {{form.submit(class="button button-block")}}
+          
+        </div>
+        <!-- <div class="field-wrap">
+          <button type ="reset"  class="button button-block cancel">Cancel</button>
+        </div> -->
+    </form>
+<div>
+  <p class="small">Already Have An Account? <a class="" href="{{url_for('users.login')}}">Sign In</a></p>  
+</div>
+  </div>
+    
+
+
+  <div>
+
+  </div>
+
+    
+  </div>
+   
+</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,91 @@
+{%extends "layout.html"%}
+
+
+{% block content %}
+<div class="wrap">
+ 
+    <h2>{{legend}}</h2>
+<div id="shedule" class='reg_users'>
+ <ul class="collection">
+
+  {% if users.items!=[] %}
+  {% for user in users.items %}
+
+    <li class="collection-item avatar">
+    <a href="{{url_for('users.user_reserves', id=user.id)}}">
+      <div class="img-wrapper circle">
+        <div class="img " style="background-image: url({{url_for('static', filename='img/'+user.image_file, )}})"></div>
+      </div>
+
+    </a>
+      <span class="title5 collection-title">User:</span> 
+      
+      <a href=""></a>{{user.fname}} {{user.lname}} </a>
+      <p>
+        <span class="collection-title">Email:</span>    {{user.email}} 
+
+      {% if (current_user.usertype=="admin") %}
+      <div class="action-buttons-wrapper">
+       <a class="waves-effect waves-light modal-trigger secondary-content" href="#modal" data-id="{{url_for('users.delete_user',user_id = user.id)}}">  <i class="material-icons ">delete</i></a>
+       
+      </div>
+      {%endif %}
+    </li>
+    {%endfor%}
+
+  </ul>
+
+  <ul class="pagination">
+    {% if users.has_prev %}
+    <li class="arrow"><a  href="{{ url_for('users.reg_users',page=users.prev_num)}}"><i class="material-icons">chevron_left</i></a></li>
+    {% else %}
+    <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+    {% endif %}
+    {% for page_num in users.iter_pages(left_edge=1, right_edge=1, left_current=1,right_current=2) %}
+      {% if page_num %}
+        {% if users.page ==page_num %}
+          <li class="active"> <a href="{{ url_for('users.reg_users',page=page_num)}}">{{page_num}}</a></li>
+        {% else %}
+          <li class="waves-effect pag-element"> <a href="{{ url_for('users.reg_users',page=page_num)}}">{{page_num}}</a></li>
+        {% endif %}
+      {% else %}
+        <span>...</span>
+      {% endif %}
+    {% endfor %}
+    {% if users.has_next %}
+      <li class="arrow"><a href="{{ url_for('users.reg_users',page=users.next_num)}}"><i class="material-icons">chevron_right</i></a></li>
+    {% else %}
+    <li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+    {% endif %}
+    {% else %}
+    <p class="no-shedules">There are no registered users, please try a letter...</p>
+    {% endif %}
+  </ul>
+
+</div>
+
+
+  <div class="fixed-button-wrapper">
+    <a class="btn-floating btn-large" href="{{url_for('main.index')}}"><i class="material-icons">home</i></a>
+  </div>
+
+
+<!-- Modal Block --> 
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <h4>Delete registered user</h4>
+    <p>The user and their created meetings will be deleted. Are you sure you want to permanently delete this user?</p>
+  </div>
+  <div class="modal-footer">
+    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel </a>
+    <form class='delete_form' action="" method="POST">
+      <button type="submit" class="delete-button  waves-effect waves-red btn-flat">Delete</button>
+    </form>
+  </div>
+</div>
+
+
+</div>
+
+
+{% endblock %}

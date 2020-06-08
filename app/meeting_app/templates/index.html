@@ -1,0 +1,114 @@
+{%extends "layout.html"%}
+
+
+{% block content %}
+<div class="wrap">
+ 
+<h2>{{legend}}</h2>
+<div id="shedule">
+
+ <ul class="collection">
+  {% if meetings.items != [] %}
+    {% for meeting in meetings.items %}
+    
+      <li class="collection-item avatar">
+      <a href="{{url_for('users.user_reserves', id=meeting.author.id)}}">
+        <div class="img-wrapper circle">
+          <div class="img " style="background-image: url({{url_for('static', filename='img/'+meeting.author.image_file, )}})"></div>
+        </div>
+
+      </a>
+        <span class="title5 collection-title">Create:</span> 
+        
+        <a href=""></a>{{meeting.author.fname}} {{meeting.author.lname}} </a> 
+        
+        <span class="small-text">{{meeting.created_date.strftime('%d %b %Y')}}  </span> 
+
+        
+        <p>
+          <span class="collection-title">Room:</span>    {{meeting.room}} 
+          <p class="divider"></p>
+          <span class="collection-title">Employee:</span> {{meeting.employee}} 
+          <p class="divider"></p>
+          
+          {% if meeting.end_date %}
+            <span class="collection-title">Date:</span> <span class="date">{{ meeting.start_date.strftime('%d %b %Y')}} - 
+            {{meeting.end_date.strftime('%d %b %Y')}} </span>
+          {% else %}
+          <span class="date"> {{ meeting.start_date.strftime('%d %b %Y')}}</span>
+          {% endif %}
+          <p class="divider"></p>
+          <span class="collection-title">Daily schedule:</span> <span class="date">{{meeting.start_time.strftime('%H:%M')}}-{{meeting.end_time.strftime('%H:%M')}}</span>
+        </p>
+      
+        {% if (meeting.author == current_user or current_user.usertype=="admin") %}
+        <div class="action-buttons-wrapper">
+          <a href="{{url_for('meetings.update_reserve', meeting_id=meeting.id)}}" class="secondary-content" title="update"><i class="material-icons">update</i></a> 
+          <a class="waves-effect waves-light modal-trigger secondary-content" href="#modal" data-id="{{url_for('meetings.delete_reserve',meeting_id = meeting.id)}}">  <i class="material-icons ">delete</i></a>
+        
+        </div>
+        {%endif %} 
+      </li>
+      {%endfor%}
+
+    </ul>
+
+    <ul class="pagination">
+      {% if meetings.has_prev %}
+      <li class="arrow"><a  href="{{ url_for('main.index',page=meetings.prev_num)}}"><i class="material-icons">chevron_left</i></a></li>
+      {% else %}
+      <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+      {% endif %}
+      {% for page_num in meetings.iter_pages(left_edge=1, right_edge=1, left_current=1,right_current=2) %}
+        {% if page_num %}
+          {% if meetings.page ==page_num %}
+            <li class="active"> <a href="{{ url_for('main.index',page=page_num)}}">{{page_num}}</a></li>
+          {% else %}
+            <li class="waves-effect pag-element"> <a href="{{ url_for('main.index',page=page_num)}}">{{page_num}}</a></li>
+          {% endif %}
+        {% else %}
+          <span>...</span>
+        {% endif %}
+      {% endfor %}
+      {% if meetings.has_next %}
+        <li class="arrow"><a href="{{ url_for('main.index',page=meetings.next_num)}}"><i class="material-icons">chevron_right</i></a></li>
+      {% else %}
+      <li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+      {% endif %}
+    {% else %}
+    <p class="no-shedules">There are no scheduled meetings, please add a meeting...</p>
+    {% endif %}
+  </ul>
+
+</div>
+
+{% if url_for(request.endpoint) != "/archive" %}
+<div class="fixed-button-wrapper">
+  <a class="btn-floating btn-large " href="{{url_for('meetings.reserve_new')}}" title="Add Meeting"><i class="material-icons">add</i></a>
+</div>
+{% else %}
+  <div class="fixed-button-wrapper">
+    <a class="btn-floating btn-large" href="{{url_for('main.index')}}"><i class="material-icons">home</i></a>
+  </div>
+{% endif %}
+
+<!-- Modal Block --> 
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <h4>Delete reserved meeting </h4>
+    <p>Are you sure you want to permanently delete this reserve?</p>
+  </div>
+  <div class="modal-footer">
+    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel </a>
+    <form class='delete_form' action="" method="POST">
+      <button type="submit" class="delete-button  waves-effect waves-red btn-flat">Delete</button>
+    </form>
+  </div>
+</div>
+
+
+</div>
+
+
+{% endblock %}
+
