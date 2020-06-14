@@ -11,6 +11,23 @@ from sqlalchemy import or_, and_
 meetings = Blueprint('meetings', __name__)
 
 
+# from flask import Flask, current_app, has_app_context
+# print(current_app)
+
+# from meeting_app.models import Room, User
+# from meeting_app import create_app
+
+# # from meeting_app import create_app
+# # app=create_app()
+# ff= create_app()
+
+# with ff.app_context():
+#   # user = User.query.all()
+#   room = Room.query.all()
+#   print(room)
+
+
+
 @meetings.route("/archive", methods=['GET', "POST"])
 @login_required
 def archive():
@@ -23,10 +40,13 @@ def archive():
   return render_template("archive.html", isIndex=True,image_file=image_file,meetings=meetings,legend="Archive")
 
 
+
+
 @meetings.route("/reserve/new", methods=["GET", "POST"])
 @login_required
 def reserve_new():
   form = ReservingForm()
+  # form = ReservingForm(room = "Choose Meeting Room")
   image_file = url_for('static', filename='/img/' + current_user.image_file)
   if form.validate_on_submit():
     st_date=datetime.strptime(form.start_date.data, '%b %d, %Y').date()
@@ -139,7 +159,9 @@ def delete_reserve(meeting_id):
   if ((meeting.author == current_user) or (current_user.usertype == "admin")):
     db.session.delete(meeting)
     db.session.commit()
+    pass
   else:
     abort(403)
   flash("Your meeting has been deleted!", 'danger')
-  return redirect(url_for('main.index'))
+  return redirect(request.referrer)
+

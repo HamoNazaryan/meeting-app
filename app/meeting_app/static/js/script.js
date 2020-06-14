@@ -241,14 +241,19 @@ function validateForm() {
     }
   }
  
-
-    if ($("#datepickerStart").val() > $("#datepickerEnd").val()){
-      valid = false;
+    if ($("#datepickerEnd").val() != "" )
+    {
+      if ($("#datepickerStart").val() > $("#datepickerEnd").val()){
+        valid = false;
+      }
+      else {
+        valid = true;
+      }
     }
-    else {
-      valid = true;
+    else
+    {
+      $("#datepickerEnd").val() = $("#datepickerStart").val()
     }
-
 
   return valid;
 }
@@ -257,7 +262,7 @@ function validateForm() {
 
 
 
-  if ($('#signup').length > 0){    
+  if ($('#signup').length > 0 || $('.account').length > 0){    
   let password = document.getElementById("password")
   , confirm_password = document.getElementById("confirm_password");
 

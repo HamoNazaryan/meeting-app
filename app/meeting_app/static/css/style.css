@@ -766,6 +766,13 @@ color: #1ab188;
   padding-bottom:20px;
   font-size: 20px;
 }
+.user-reserves-section #modal h4{
+  color:#000;
+}
+
+.account input[type=text]:not(.browser-default).invalid ~ .helper-text[data-error]{
+  width: 100%;
+} 
 
 
 #reset_request .reset-text{

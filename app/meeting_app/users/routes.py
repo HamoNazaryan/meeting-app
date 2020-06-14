@@ -1,12 +1,15 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint,abort
 from flask_login import login_user, current_user, logout_user, login_required
 from meeting_app import db, bcrypt
-from meeting_app.models import User, Meeting
+from meeting_app.models import User, Meeting, Room
 from meeting_app.users.forms import SignUpForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm
 from meeting_app.users.utils import save_picture, send_reset_mail
 from datetime import datetime, timedelta
 
 users = Blueprint('users', __name__)
+
+
+
 
 
 @users.route("/signup", methods=["GET", "POST"])
@@ -19,8 +22,11 @@ def signUp():
     user = User(fname=form.fname.data, lname=form.lname.data, email=form.email.data, password = hashed_pass)
     db.session.add(user)
     db.session.commit()
-    flash(f'Your account has been created! You are now able to log in', 'success')
-    return redirect(url_for('users.login'))
+    flash(f'Your account has been created!', 'success')
+    user = User.query.filter_by(email=form.email.data).first()
+    login_user(user, remember=False)
+    return redirect(url_for('main.index'))
+    # return redirect(url_for('users.login'))
   return render_template('signup.html', title='SignUp', form=form)
 
 
@@ -78,10 +84,12 @@ def user_reserves(id):
   user=User.query.filter_by(id=id).first_or_404()
   current_date = datetime(datetime.today().year, datetime.today().month, datetime.today().day)
   date_now = current_date - timedelta(days = 1)
-  meetings = Meeting.query.filter_by(author=user)\
-                    .filter(Meeting.end_date > date_now).order_by(Meeting.created_date.desc())\
+  # meetings = Meeting.query.filter_by(author=user)\
+  #                   .filter(Meeting.end_date > date_now).order_by(Meeting.created_date.desc())\
+  #                   .paginate(page=page,per_page=5)
+  meetings = Meeting.query.filter_by(author=user).order_by(Meeting.end_date.desc())\
                     .paginate(page=page,per_page=5)
-  return render_template('user_reserves.html', meetings=meetings, user=user)
+  return render_template('user_reserves.html', meetings=meetings, user=user, current_date=current_date)
 
 
 @users.route("/reset_password", methods=['GET','POST'])
@@ -121,7 +129,7 @@ def reset_token(token):
 def reg_users():
   if current_user.usertype == "admin":
     page=request.args.get('page',1,type=int)
-    users = User.query.filter_by(usertype="user").paginate(page=page,per_page=5)
+    users = User.query.filter_by(usertype="user").paginate(page=page,per_page=8)
     image_file = url_for('static', filename='/img/' + current_user.image_file)
     return render_template("users.html", isIndex=True,image_file=image_file,users=users,legend="All registered users")
   else:

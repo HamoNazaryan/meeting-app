@@ -18,20 +18,19 @@ mail=Mail()
 def create_app(config_class=Config):
   app = Flask(__name__)
   app.config.from_object(Config)
-  
   db.init_app(app)
   bcrypt.init_app(app)
   login_manager.init_app(app)
   mail.init_app(app)
-  
-  from meeting_app.main.routes import main
-  from meeting_app.users.routes  import users
-  from meeting_app.meetings.routes import meetings
-  from meeting_app.errors.handlers import errors
-  app.register_blueprint(users)
-  app.register_blueprint(main)
-  app.register_blueprint(meetings)
-  app.register_blueprint(errors)
+  with app.app_context():
+    from meeting_app.main.routes import main
+    from meeting_app.users.routes  import users
+    from meeting_app.meetings.routes import meetings
+    from meeting_app.errors.handlers import errors
+    app.register_blueprint(users)
+    app.register_blueprint(main)
+    app.register_blueprint(meetings)
+    app.register_blueprint(errors)
 
   return app
 

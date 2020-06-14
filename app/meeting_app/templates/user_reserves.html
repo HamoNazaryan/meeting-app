@@ -5,12 +5,14 @@
 <div class="wrap">
 <section class="user-reserves-section">
  
-    <h4>Actual reserved meetings by  {{user.fname}} {{user.lname}} - {{meetings.total}}</h4>
+    <h4>Reserved meetings by  {{user.fname}} {{user.lname}} - {{meetings.total}}</h4>
+    
 <div id="shedule">
  <ul class="collection">
 
-  {% for meeting in meetings.items %}
-
+  {% if meetings.items != [] %}  
+    {% for meeting in meetings.items %}
+   
     <li class="collection-item avatar">
 
       <div class="img-wrapper circle">
@@ -42,9 +44,12 @@
      
       {% if (meeting.author == current_user or meeting.usertype=="admin") %}
       <div class="action-buttons-wrapper">
-        <a href="{{url_for('meetings.update_reserve', meeting_id=meeting.id)}}" class="secondary-content" title="update"><i class="material-icons">update</i></a> 
-        <a class="waves-effect waves-light modal-trigger secondary-content" href="#modal" data-id="{{url_for('meetings.delete_reserve',meeting_id = meeting.id)}}">  <i class="material-icons ">delete</i></a>
-       
+        {% if current_date.date() <= meeting.end_date %}
+          <a href="{{url_for('meetings.update_reserve', meeting_id=meeting.id)}}" class="secondary-content" title="update"><i class="material-icons">update</i></a> 
+          <a class="waves-effect waves-light modal-trigger secondary-content" href="#modal" data-id="{{url_for('meetings.delete_reserve',meeting_id = meeting.id)}}">  <i class="material-icons ">delete</i></a>
+        {% else %}
+          <a class="waves-effect waves-light modal-trigger secondary-content" href="#modal" data-id="{{url_for('meetings.delete_reserve',meeting_id = meeting.id)}}">  <i class="material-icons ">delete</i></a>
+        {% endif %}
       </div>
       {%endif %} 
     </li>
@@ -73,6 +78,9 @@
       <li class="arrow"><a href="{{ url_for('users.user_reserves', id=user.id, page=meetings.next_num)}}"><i class="material-icons">chevron_right</i></a></li>
     {% else %}
     <li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+    {% endif %}
+    {% else %}
+    <p class="no-shedules">There are no scheduled meetings, please add a meeting...</p>
     {% endif %}
   </ul>
 

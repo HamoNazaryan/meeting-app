@@ -50,3 +50,10 @@ class Meeting(db.Model):
   def __repr__(self):
     return f"Meeting('{self.room}', '{self.employee}', '{self.start_date}', '{self.end_date}','{self.start_time}', '{self.end_time}','{self.created_date}')"
 
+
+class Room(db.Model):
+  id = db.Column(db.Integer, primary_key=True)
+  created_room = db.Column(db.String(100), nullable=False, unique=True)
+
+  def __repr__(self):
+    return f"Room('{self.created_room}')"

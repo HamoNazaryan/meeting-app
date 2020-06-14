@@ -8,13 +8,6 @@ from meeting_app.models import User
 
 
 
-# from flask import Flask
-# app = Flask(__name__)
-# with app.app_context():
-#   user = User.query.filter_by(usertype="admin").first()
-#   print(user)
-
-
 def check_email(FlaskForm, field): 
   regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
   if(not re.search(regex,field.data)):
@@ -77,7 +70,7 @@ class LoginForm(FlaskForm):
 class UpdateAccountForm(FlaskForm):
   fname = StringField("First Name", validators=[DataRequired(), Length(min=2, max=60)])
   lname = StringField("Last Name", validators=[DataRequired(), Length(min=2, max=60)])
-  email = StringField("Email", validators=[DataRequired(), Email(), check_email])
+  email = StringField("Email", validators=[DataRequired(), check_email])
   picture = FileField('Update profile picture', validators=[FileAllowed(['jpg','png','jpeg'])])
   password = PasswordField("New password",  validators = [check_pass, optional(), Length(min=6, max=60)])
   confirm_password = PasswordField("Confirm Password", validators = [EqualTo("password")])
