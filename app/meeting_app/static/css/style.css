@@ -309,7 +309,11 @@ input.valid:not([type]), input.valid:not([type]):focus, input[type=text].valid:n
   border-bottom: 1px solid #1ab188;
   -webkit-box-shadow: none;
 	-moz-box-shadow: none;
-	box-shadow: none;
+  box-shadow: none;
+
+}
+input[type=text]:not(.browser-default){
+  padding-left: 15px;
 }
 
 input.invalid:not([type]), input.invalid:not([type]):focus, input[type=text].invalid:not(.browser-default), input[type=text].invalid:not(.browser-default):focus, input[type=password].invalid:not(.browser-default), input[type=password].invalid:not(.browser-default):focus, input[type=email].invalid:not(.browser-default), input[type=email].invalid:not(.browser-default):focus, input[type=url].invalid:not(.browser-default), input[type=url].invalid:not(.browser-default):focus, input[type=time].invalid:not(.browser-default), input[type=time].invalid:not(.browser-default):focus, input[type=date].invalid:not(.browser-default), input[type=date].invalid:not(.browser-default):focus, input[type=datetime].invalid:not(.browser-default), input[type=datetime].invalid:not(.browser-default):focus, input[type=datetime-local].invalid:not(.browser-default), input[type=datetime-local].invalid:not(.browser-default):focus, input[type=tel].invalid:not(.browser-default), input[type=tel].invalid:not(.browser-default):focus, input[type=number].invalid:not(.browser-default), input[type=number].invalid:not(.browser-default):focus, input[type=search].invalid:not(.browser-default), input[type=search].invalid:not(.browser-default):focus, textarea.materialize-textarea.invalid, textarea.materialize-textarea.invalid:focus, .select-wrapper.invalid>input.select-dropdown, .select-wrapper.invalid>input.select-dropdown:focus{
@@ -1131,4 +1135,67 @@ color: #1ab188;
 .invalid ~ .helper-text{
   margin-bottom: 20px;
   display: inline-block;
+  width: 100%;
+}
+
+[type="checkbox"]+span:not(.lever){
+  color: rgb(43, 42, 42)!important;
+}
+
+.dropdown-content li{
+  position: relative;
+}
+
+
+#reserve [type="checkbox"]:not(:checked), [type="checkbox"]:checked{
+  pointer-events: inherit;
+}
+
+
+.dropdown-content.select-dropdown > li.disabled.active span:before{
+  border: none;
+  background-color: rgba(0,0,0,0.42);
+}
+
+
+#reserve .dropdown-content li>span>label {
+  left: 10px;
+}
+
+.input-field .helper-text{
+  font-size: 14px;
+}
+
+input.select-dropdown {
+  max-width:100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* padding-right:20px !important; */
+}
+/* ul.select2-selection__rendered {
+  padding-right: 12px !important; //overrides select2 style
+}*/
+
+
+.all_rooms .collection .collection-item.avatar .secondary-content{
+  right: 60px;
+  top: -2px;
+}
+
+.all_rooms .collection .collection-item.avatar .secondary-content:last-child{
+  right: 10px;
+}
+
+.all_rooms .action-buttons-wrapper{
+  height: 20px;
+  width: 50px;
+}
+
+.all_rooms .collection .collection-item.avatar{
+  min-height: auto;
+}
+
+
+.margin-bottom{
+  margin-bottom: 80px;
 }

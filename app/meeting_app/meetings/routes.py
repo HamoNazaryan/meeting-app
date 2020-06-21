@@ -1,31 +1,13 @@
 from flask import render_template, Blueprint, url_for, flash, redirect, request, abort
 from flask_login import current_user, login_required
 from meeting_app import db
-from meeting_app.models import Meeting
-from meeting_app.meetings.forms import ReservingForm
+from meeting_app.models import Meeting, Room
+from meeting_app.meetings.forms import ReservingForm,  AddRoomForm
 from datetime import datetime, timedelta, date
 from sqlalchemy import or_, and_
 
 
-
 meetings = Blueprint('meetings', __name__)
-
-
-# from flask import Flask, current_app, has_app_context
-# print(current_app)
-
-# from meeting_app.models import Room, User
-# from meeting_app import create_app
-
-# # from meeting_app import create_app
-# # app=create_app()
-# ff= create_app()
-
-# with ff.app_context():
-#   # user = User.query.all()
-#   room = Room.query.all()
-#   print(room)
-
 
 
 @meetings.route("/archive", methods=['GET', "POST"])
@@ -40,13 +22,10 @@ def archive():
   return render_template("archive.html", isIndex=True,image_file=image_file,meetings=meetings,legend="Archive")
 
 
-
-
 @meetings.route("/reserve/new", methods=["GET", "POST"])
 @login_required
 def reserve_new():
   form = ReservingForm()
-  # form = ReservingForm(room = "Choose Meeting Room")
   image_file = url_for('static', filename='/img/' + current_user.image_file)
   if form.validate_on_submit():
     st_date=datetime.strptime(form.start_date.data, '%b %d, %Y').date()
@@ -72,7 +51,7 @@ def reserve_new():
       flash("Meeting room in this time already reserved for another meeting", 'danger')
       return redirect(url_for('meetings.reserve_new'))
     
-    meetings=Meeting(room=form.room.data, employee=form.employee.data, 
+    meetings=Meeting(meeting_title=form.meeting_title.data,room=form.room.data, employee=', '.join(form.employee.data), 
                     start_date=st_date,
                     end_date=end_date,
                     start_time=st_time,
@@ -118,17 +97,16 @@ def update_reserve(meeting_id):
                                           and_(end_time >= Meeting.start_time, end_time <= Meeting.end_time),
                                           and_(end_time >= Meeting.end_time, st_time <= Meeting.end_time)
                                         )).all()
-      print(reserve_check)
       current_res = False
       for res in reserve_check:
         if res.id==meetings.id:
           current_res = True
-      print("meetings.id =", meetings.id)
       if reserve_check and not current_res:
         flash("Meeting room in this time already reserved for another meeting", 'danger')
         return redirect(url_for('meetings.update_reserve', meeting_id=meetings.id))
+      meetings.meeting_title=form.meeting_title.data
       meetings.room = form.room.data
-      meetings.employee = form.employee.data
+      meetings.employee = ', '.join(form.employee.data)
       meetings.start_date =st_date
       meetings.start_time = st_time
       meetings.end_time = end_time
@@ -136,8 +114,9 @@ def update_reserve(meeting_id):
       meetings.end_date=end_date
       db.session.commit()
       flash("Your meeting has been updated!", 'success')
-      return redirect(url_for('main.index', meeting_id=meetings.id))
+      return redirect(url_for('main.index'))
     elif request.method == "GET":
+      form.meeting_title.data=meetings.meeting_title
       form.room.data = meetings.room
       form.employee.data=meetings.employee
       form.start_date.data = meetings.start_date.strftime('%b %d, %Y')
@@ -150,6 +129,7 @@ def update_reserve(meeting_id):
 
   return render_template('create_reserve.html', title="Update Meeting", 
                         form = form, legend="Update  Meeting")
+
 
 
 @meetings.route('/reserve/<int:meeting_id>/delete',methods=["POST"])
@@ -165,3 +145,66 @@ def delete_reserve(meeting_id):
   flash("Your meeting has been deleted!", 'danger')
   return redirect(request.referrer)
 
+
+@meetings.route("/rooms", methods=["GET", "POST"])
+@login_required
+def all_rooms():
+  if current_user.usertype == "admin":
+    image_file = url_for('static', filename='/img/' + current_user.image_file)
+    page=request.args.get('page',1,type=int)
+    rooms = Room.query.paginate(page=page,per_page=10)
+    return render_template("rooms.html", isIndex=True,rooms=rooms,legend="All rooms",image_file=image_file)
+  else:
+    abort(403)
+
+
+@meetings.route("/room/new", methods=["GET", "POST"])
+@login_required
+def room_new():
+  if current_user.usertype == "admin":
+    image_file = url_for('static', filename='/img/' + current_user.image_file)
+    form =  AddRoomForm()
+    if form.validate_on_submit():
+      rooms=Room(created_room=form.add_room.data)
+      db.session.add(rooms)
+      db.session.commit()
+      flash('Meeting room added!', 'success')
+      return redirect(url_for('meetings.all_rooms'))
+    return render_template('create_room.html', title='Add Meeting Room', 
+                        form=form, isIndex=True, legend="Add Meeting Room", image_file=image_file)
+  else:
+    abort(403)
+
+
+
+@meetings.route('/room/<int:room_id>/delete',methods=["POST"])
+@login_required
+def delete_room(room_id):  
+  room= Room.query.get_or_404(room_id)
+  name = room.created_room
+  if ((current_user.usertype == "admin")):
+    db.session.delete(room)
+    db.session.commit()
+  else:
+    abort(403)
+  flash(f" '{name}' has been deleted!", 'danger')
+  return redirect(url_for('meetings.all_rooms'))
+
+
+@meetings.route('/room/<int:room_id>/update',methods=['GET',"POST"])
+@login_required
+def update_room(room_id):
+  rooms= Room.query.get_or_404(room_id) 
+  if current_user.usertype=="admin":
+    form = AddRoomForm()
+    if form.validate_on_submit():
+      rooms.created_room=form.add_room.data
+      db.session.commit()
+      flash("Your meeting room has been updated!", 'success')
+      return redirect(url_for('meetings.all_rooms'))
+    elif request.method == "GET":
+      form.add_room.data=rooms.created_room
+  else:
+    abort(403)
+  return render_template('create_room.html', title="Update Meeting Room", 
+                        form = form, legend="Update Room")

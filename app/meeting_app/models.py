@@ -38,17 +38,19 @@ class User(db.Model, UserMixin):
 
 class Meeting(db.Model):
   id = db.Column(db.Integer, primary_key=True)
+  meeting_title = db.Column(db.String(100), nullable=False)
   room = db.Column(db.String(100), nullable=False)
-  employee = db.Column(db.String(250), nullable=False)
+  employee = db.Column(db.Text, nullable=False)
   start_date = db.Column(db.Date, nullable=False)
   end_date = db.Column(db.Date)
   start_time = db.Column(db.Time, nullable=False)
   end_time = db.Column(db.Time, nullable=False)
   created_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
   user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+  
 
   def __repr__(self):
-    return f"Meeting('{self.room}', '{self.employee}', '{self.start_date}', '{self.end_date}','{self.start_time}', '{self.end_time}','{self.created_date}')"
+    return f"Meeting('{self.room}', '{self.meeting_title}', '{self.employee}', '{self.start_date}', '{self.end_date}','{self.start_time}', '{self.end_time}','{self.created_date}')"
 
 
 class Room(db.Model):
@@ -56,4 +58,4 @@ class Room(db.Model):
   created_room = db.Column(db.String(100), nullable=False, unique=True)
 
   def __repr__(self):
-    return f"Room('{self.created_room}')"
+    return f"Room('{self.created_room}', '{self.id}')"

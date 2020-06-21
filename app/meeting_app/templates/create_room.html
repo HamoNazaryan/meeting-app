@@ -1,0 +1,45 @@
+{%extends "layout.html"%}
+
+{% block content %}
+<div class="wrap">
+<div id="create_room">
+  <h1>{{legend}}</h1>
+   <form  name="meeting-form" id="meeting-form" method="POST" autocomplete="off" action="" onsubmit="return validateForm()">
+    {{ form.hidden_tag() }}
+
+    <div class="field-wrap margin-bottom">
+  
+      {{form.add_room.label(class="req")}}
+         {% if form.add_room.errors%}
+           {{form.add_room(class="validate invalid") | safe}}
+           {% for error in form.add_room.errors %}
+             <span class="helper-text"  data-error="{{error}}"></span>
+           {% endfor %}
+         {% else %}
+           {{form.add_room(class="validate")}}
+           <span class="helper-text"  data-error="This field is required."></span>
+         {% endif %}    
+   </div>
+
+    <!-- <div class="top-row margin-top">
+      <div class="field-wrap">
+        <button type ="reset"  id = "reset" class="button button-block cancel">Cancel</button>
+      </div> -->
+
+      <div class="field-wrap margin-top">
+        {{form.submit(class="button button-block")}}
+      </div>
+    <!-- </div> -->
+
+
+  </form>
+
+</div>
+
+
+
+<div class="fixed-button-wrapper">
+  <a class="btn-floating btn-large" href="{{url_for('main.index')}}"><i class="material-icons">home</i></a>
+</div>
+</div>
+{% endblock %}

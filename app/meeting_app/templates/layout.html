@@ -84,6 +84,14 @@
         <li><a href="{{url_for('users.reg_users')}}" class="waves-effect"><i class="material-icons">people_outline</i>Registered users</a></li>
         {% endif %}
 
+        {% if ((url_for(request.endpoint) != "/rooms") and  current_user.usertype == "admin") %}
+        <li><a href="{{url_for('meetings.all_rooms')}}" class="waves-effect"><i class="material-icons">account_balance</i>All Meeting Rooms</a></li>
+        {% endif %}
+
+        {% if ((url_for(request.endpoint) != "/room/new") and  current_user.usertype == "admin") %}
+        <li><a href="{{url_for('meetings.room_new')}}" class="waves-effect"><i class="material-icons">home</i>Add Meeting Room</a></li>
+        {% endif %}
+
         <li><div class="divider"></div></li>
         <!-- <li><a class="subheader">Subheader</a></li> -->
         <li><a class="waves-effect" href="{{url_for('users.logout')}}"><i class="material-icons">exit_to_app</i> Log out</a></li>

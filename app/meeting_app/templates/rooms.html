@@ -1,0 +1,83 @@
+{%extends "layout.html"%}
+
+
+{% block content %}
+<div class="wrap">
+ 
+    <h2>{{legend}}</h2>
+<div id="shedule" class='all_rooms'>
+ <ul class="collection">
+
+  {% if rooms.items!=[] %}
+  {% for room in rooms.items %}
+
+    <li class="collection-item avatar">
+      <span class="title5 collection-title">Room name:</span> 
+      
+      <span>{{room.created_room}}</span>
+
+      {% if (current_user.usertype=="admin") %}
+      <div class="action-buttons-wrapper">
+        <a href="{{url_for('meetings.update_room', room_id=room.id)}}" class="secondary-content" title="update"><i class="material-icons">update</i></a> 
+       <a class="waves-effect waves-light modal-trigger secondary-content" href="#modal" data-id="{{url_for('meetings.delete_room',room_id = room.id)}}">  <i class="material-icons ">delete</i></a>
+      </div>
+      {%endif %}
+    </li>
+    {%endfor%}
+
+  </ul>
+
+  <ul class="pagination">
+    {% if rooms.has_prev %}
+    <li class="arrow"><a  href="{{ url_for('meetings.all_rooms',page=rooms.prev_num)}}"><i class="material-icons">chevron_left</i></a></li>
+    {% else %}
+    <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+    {% endif %}
+    {% for page_num in rooms.iter_pages(left_edge=1, right_edge=1, left_current=1,right_current=2) %}
+      {% if page_num %}
+        {% if rooms.page ==page_num %}
+          <li class="active"> <a href="{{ url_for('meetings.all_rooms',page=page_num)}}">{{page_num}}</a></li>
+        {% else %}
+          <li class="waves-effect pag-element"> <a href="{{ url_for('meetings.all_rooms',page=page_num)}}">{{page_num}}</a></li>
+        {% endif %}
+      {% else %}
+        <span>...</span>
+      {% endif %}
+    {% endfor %}
+    {% if rooms.has_next %}
+      <li class="arrow"><a href="{{ url_for('meetings.all_rooms',page=rooms.next_num)}}"><i class="material-icons">chevron_right</i></a></li>
+    {% else %}
+    <li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+    {% endif %}
+    {% else %}
+    <p class="no-shedules">There are no meeting rooms, please try a letter...</p>
+    {% endif %}
+  </ul>
+
+</div>
+
+
+  <div class="fixed-button-wrapper">
+    <a class="btn-floating btn-large" href="{{url_for('meetings.room_new')}}" title="Add Meeting Room"><i class="material-icons">add</i></a>
+  </div>
+
+
+<!-- Modal Block --> 
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <h4>Delete meeting room</h4>
+    <p>The meeting room will be deleted. Are you sure you want to permanently delete this room?</p>
+  </div>
+  <div class="modal-footer">
+    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel </a>
+    <form class='delete_form' action="" method="POST">
+      <button type="submit" class="delete-button  waves-effect waves-red btn-flat">Delete</button>
+    </form>
+  </div>
+</div>
+
+
+</div>
+
+
+{% endblock %}

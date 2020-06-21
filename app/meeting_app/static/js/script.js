@@ -53,29 +53,18 @@ $('#meeting-form').validate({
 });
 
 
-
-$(".input-field").change(function(){
-  if ($(".input-field").val() != ""){
-    $(".input-field").removeClass("invalid");
-    $(".input-field").removeClass("error");
-    $(".select-wrapper").removeClass("invalid");
-    $(".select-wrapper").addClass('del-after');
-  } 
-  else 
-  {
-    $(".input-field").addClass("invalid");
-    $(".select-wrapper").removeClass('del-after');   
+$(".select-wrapper .input-field").change(function(){
+  if ($(this).val() != ""){
+    $(this).parent().addClass("valid").removeClass("invalid");
+    // $(this).css("border-bottom"," 1px solid #1ab188")
+  } else {
+    $(this).parent().addClass("invalid").removeClass("valid");
   }
 })
 
 
 let valid = true;
-
-
-  
-  let startToEnd;
-
-
+let startToEnd;
 let currYear = (new Date()).getFullYear();
 let currDay = (new Date()).getDate();
 let currMonth = (new Date()).getMonth();
@@ -252,7 +241,7 @@ function validateForm() {
     }
     else
     {
-      $("#datepickerEnd").val() = $("#datepickerStart").val()
+      $("#datepickerEnd").val($("#datepickerStart").val());
     }
 
   return valid;
@@ -262,7 +251,7 @@ function validateForm() {
 
 
 
-  if ($('#signup').length > 0 || $('.account').length > 0){    
+if ($('#signup').length > 0 || $('.account').length > 0){    
   let password = document.getElementById("password")
   , confirm_password = document.getElementById("confirm_password");
 
@@ -326,6 +315,31 @@ $(document).mousemove(function( event ) {
 });
 
 
+if (top.location.pathname === '/reserve/new')
+{
+  $('.select-wrapper option:first-child').attr("selected", true);
+  $('.select-wrapper option:first-child').prop("disabled", true);
+  
+  $('.dropdown-content.select-dropdown li:first-child').addClass("disabled selected");
+  $(".employee input").val("Choose Employees");
+}
+
+
+url = window.location.href;
+let lastPart = url.substr(url.lastIndexOf('/') + 1);
+
+if (lastPart === "update") {
+  $('.dropdown-content.select-dropdown li:first-child').removeClass("selected").addClass("disabled active");
+  $('.select-wrapper option:first-child').prop("disabled", true);
+  $('.select-wrapper option:first-child').removeAttr("selected");
+  $('.dropdown-content.select-dropdown li:first-child').removeClass("selected").addClass("disabled active");
+  
+
+  // $(".employee input").val() = $('#employee .input-field').val();
+  let string = $('.employee input').val();
+  let multi = string.substr(string.indexOf(',')+2);
+  $('.employee input').val(multi);
+}
 
 // $('#pickerEnd').timepicker({
 //   twelveHour: false,
@@ -379,3 +393,14 @@ $(document).mousemove(function( event ) {
 //     pickEndTime = $('#pickerEnd').val().split(":");
 //   });
 // });
+
+
+// $('.dropdown-content.select-dropdown.multiple-select-dropdown ').prepend( '<li class="disabled selected"  tabindex="0"><span><label><input type="checkbox" disabled="" "=""><span>Choose your option</span></label></span></li>' );
+
+// $('#employee').prepend('<option value="" disabled="" selected="">Choose your option111111</option>')
+
+// $('select-dropdown')
+
+
+// $('#employee option:first-child').addClass("hivand").attr("selected","").attr("disabled");
+

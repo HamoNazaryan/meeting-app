@@ -26,7 +26,24 @@
       {% endif %}   #}    
     </div> -->
 
-    <div class="field-wrap select-field">
+
+    <div class="field-wrap">
+  
+      {{form.meeting_title.label(class="req")}}
+         {% if form.meeting_title.errors%}
+           {{form.meeting_title(class="validate invalid") | safe}}
+           {% for error in form.meeting_title.errors %}
+             <span class="helper-text"  data-error="{{error}}"></span>
+           {% endfor %}
+         {% else %}
+           {{form.meeting_title(class="validate")}}
+           <span class="helper-text"  data-error="This field is required."></span>
+         {% endif %}    
+   </div>
+
+
+
+    <div class="field-wrap select-field ">
       {{form.room.label(class="active")}}
       {% if form.room.errors %}
         {{form.room(class="input-field validate invalid", required=True)}}
@@ -39,23 +56,23 @@
       {% endif %}
     </div> 
 
-    <div class="field-wrap">
+    <div class="field-wrap input-field employee">
   
-   {{form.employee.label(class="req")}}
+   {{form.employee.label(class="active")}}
       {% if form.employee.errors%}
-        {{form.employee(class="validate invalid") | safe}}
+        {{form.employee(class="input-field validate invalid", required=True)}}
         {% for error in form.employee.errors %}
           <span class="helper-text"  data-error="{{error}}"></span>
         {% endfor %}
       {% else %}
-        {{form.employee(class="validate")}}
+        {{form.employee(class="input-field validate", required=True)}}
         <span class="helper-text"  data-error="This field is required."></span>
       {% endif %} 
 
 </div>
 
 
-    <div class="top-row add-margin">
+    <div class="top-row">
       <div class="field-wrap">
         <label class="req">
           Start <i class="material-icons">event</i>
@@ -112,7 +129,7 @@
 
 
 
-      <div class="field-wrap">
+      <div class="field-wrap ">
         <label class="picker-label req">
           End <i class="material-icons">access_time</i>
         </label>
@@ -139,7 +156,7 @@
         <button type ="reset"  id = "reset" class="button button-block cancel">Cancel</button>
       </div> -->
 
-      <div class="field-wrap margin-top">
+      <div class="field-wrap margin-top margin-top">
         {{form.submit(class="button button-block")}}
       </div>
     <!-- </div> -->

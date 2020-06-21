@@ -133,7 +133,8 @@ def reg_users():
     image_file = url_for('static', filename='/img/' + current_user.image_file)
     return render_template("users.html", isIndex=True,image_file=image_file,users=users,legend="All registered users")
   else:
-    return redirect(url_for('users.login'))
+    abort(403)
+    # return redirect(url_for('users.login'))
 
 
 
