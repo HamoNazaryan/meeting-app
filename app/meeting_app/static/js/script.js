@@ -241,7 +241,7 @@ function validateForm() {
     }
     else
     {
-      $("#datepickerEnd").val($("#datepickerStart").val());
+      // $("#datepickerEnd").val($("#datepickerStart").val());
     }
 
   return valid;

@@ -5,7 +5,6 @@ from flask_login import LoginManager
 from flask_mail import Mail
 from meeting_app.config import Config
 
-
 db = SQLAlchemy()
 bcrypt = Bcrypt()
 login_manager = LoginManager()

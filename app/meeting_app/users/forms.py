@@ -11,7 +11,7 @@ from meeting_app.models import User
 def check_email(FlaskForm, field): 
   regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
   if(not re.search(regex,field.data)):
-    raise  ValidationError('Invalid email address')
+    raise  ValidationError('Invalid email address.')
 
 
 

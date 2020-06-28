@@ -31,9 +31,11 @@ class ReservingForm(FlaskForm):
   meeting_title = StringField("Meeting Title", validators=[DataRequired()])
   cr_room = Room.query.all()
   room = SelectField("Meeting Room", choices=[("","Choose meeting room")]+[((room.created_room),(room.created_room)) for room in cr_room ], validators=[DataRequired()], coerce=str)
+  # room =SelectField("Meeting Room", validators=[DataRequired()], coerce=str)
   my_choices = [("","Choose Employees")]+[((user.email),(user.email)) for user in User.query.filter_by(usertype="user")]
   # my_choices = [("","Choose Employees")]+[((user.email),(user.email)) for user in User.query.all()]
-  employee = SelectMultipleField("Employee",choices = my_choices,default=["1"], validators=[DataRequired()])
+  employee = SelectMultipleField("Employee",choices=my_choices, validators=[DataRequired()])
+  # employee = SelectMultipleField("Employee", validators=[DataRequired()])
   start_date = StringField("start", validators=[DataRequired(), check_date])
   end_date = StringField("end",validators=[check_end_date])
   start_time = StringField("start-date", validators=[DataRequired(),check_time])

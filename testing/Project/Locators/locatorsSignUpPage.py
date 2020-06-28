@@ -1,0 +1,13 @@
+class LocatorsSignUpPage:
+    body_selector = "body"
+    signup_title_selector = "#signup h1"
+    fname_id = "fname"
+    lname_id = "lname"
+    email_id = "email"
+    password_id = "password"
+    confirm_password_id = "confirm_password"
+    signup_button_id = "submit"
+    have_account_block_selector = "p.small"
+    signin_selector = "a[href='/login']"
+    char_counter_selector = "~.character-counter"
+    error_fields_selector = "+span.helper-text"

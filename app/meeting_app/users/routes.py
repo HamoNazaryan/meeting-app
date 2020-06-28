@@ -42,7 +42,7 @@ def login():
       next_page = request.args.get('next')
       return redirect(next_page) if next_page else redirect(url_for('main.index'))
     else:
-      flash("Login Unsuccessful, Please check email and password", 'danger')
+      flash("Login unsuccessful, please check email and password !", 'danger')
   return render_template('login.html', title='SignIn', form=form)
 
 
