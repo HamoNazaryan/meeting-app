@@ -64,7 +64,7 @@
               {% endfor %}            
           {% else %}
           {{form.email(class="validate", type="email")}}
-          <span class="helper-text" data-error="Invalid email address" ></span>
+          <span class="helper-text" data-error="Invalid email address." ></span>
         {% endif %}              
       </div>
       <!-- <div class="top-row add-margin"> -->
@@ -78,7 +78,7 @@
               {% endfor %}            
           {% else %}
               {{form.password(class="validate signupPass",minlength="6",maxlength="60", data_length="60")}}
-              <span class="helper-text" data-error="Field must be between 6 and 20 characters long." ></span>
+              <span class="helper-text" data-error="Field must be between 6 and 60 characters long." ></span>
           {% endif %}        
           
         </div>

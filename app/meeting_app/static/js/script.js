@@ -122,8 +122,8 @@ $(".datepicker").change(function(){
 })
 
 $('.datepicker').change(function(){
-  if ( ($("#datepickerStart").val() !="") && ($("#datepickerEnd").val() !="")){
-    if ($("#datepickerStart").val() > $("#datepickerEnd").val()){
+  if (($("#datepickerStart").val() !="") && ($("#datepickerEnd").val() !="")){
+    if (Date.parse($("#datepickerStart").val()) > Date.parse($("#datepickerEnd").val())){
       valid = false;
       if( event.target.id == "datepickerEnd") {
         $("#datepickerEnd").closest(".field-wrap").find('span.helper-text').attr("data-error","The end date must be greater than the start date.");
@@ -232,7 +232,7 @@ function validateForm() {
  
     if ($("#datepickerEnd").val() != "" )
     {
-      if ($("#datepickerStart").val() > $("#datepickerEnd").val()){
+      if ( Date.parse($("#datepickerStart").val()) > Date.parse($("#datepickerEnd").val())){
         valid = false;
       }
       else {

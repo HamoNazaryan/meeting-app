@@ -26,12 +26,11 @@ def archive():
 @login_required
 def reserve_new():
   form = ReservingForm()
-  # choices=[("","Choose meeting room")]+[((room.created_room),(room.created_room)) for room in Room.query.all() ]
-  # form.room.choices = choices
-  # my_choices = [("","Choose Employees")]+[((user.email),(user.email)) for user in User.query.filter_by(usertype="user")]
-  # form.employee.choices = my_choices
-  # form.employee.default=1
-  # form.process()
+  choices=[("","Choose meeting room")]+[((room.created_room),(room.created_room)) for room in Room.query.all() ]
+  form.room.choices = choices
+  my_choices = [("","Choose Employees")]+[((user.email),(user.email)) for user in User.query.filter_by(usertype="user")]
+  form.employee.choices = my_choices
+  form.employee.default=1
   image_file = url_for('static', filename='/img/' + current_user.image_file)
   if form.validate_on_submit():
     st_date=datetime.strptime(form.start_date.data, '%b %d, %Y').date()
@@ -82,11 +81,10 @@ def update_reserve(meeting_id):
 
   if meetings.author == current_user or current_user.usertype=="admin":
     form = ReservingForm()
-    # choices=[("","Choose meeting room")]+[((room.created_room),(room.created_room)) for room in Room.query.all() ]
-    # form.room.choices = choices
-    # my_choices = [("","Choose Employees")]+[((user.email),(user.email)) for user in User.query.filter_by(usertype="user")]
-    # form.employee.choices = my_choices
-    # form.process()
+    choices=[("","Choose meeting room")]+[((room.created_room),(room.created_room)) for room in Room.query.all() ]
+    form.room.choices = choices
+    my_choices = [("","Choose Employees")]+[((user.email),(user.email)) for user in User.query.filter_by(usertype="user")]
+    form.employee.choices = my_choices
     if form.validate_on_submit():
       
       st_date=datetime.strptime(form.start_date.data, '%b %d, %Y').date()

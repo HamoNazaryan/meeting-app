@@ -1,22 +1,8 @@
 from testing.Project.Locators.locatorsLogin import LocatorsLogin
 
-class LoginPage:
+class LoginPage(LocatorsLogin):
     def __init__(self, driver):
         self.driver = driver
-
-        self.username_textbox_id = LocatorsLogin.username_textbox_id
-        self.password_textbox_id = LocatorsLogin.password_textbox_id
-        self.login_button_id = LocatorsLogin.login_button_id
-        self.flash_message_selector = LocatorsLogin.flash_message_selector
-        self.login_title_selector = LocatorsLogin.login_title_selector
-        self.remember_id = LocatorsLogin.remember_id
-        self.forgot_block_selector = LocatorsLogin.forgot_block_selector
-        self.account_need_selector = LocatorsLogin.need_account_selector
-        self.email_error_text_selector = LocatorsLogin.email_error_text_selector
-        self.body_selector = LocatorsLogin.body_selector
-        self.password_error_text_selector = LocatorsLogin.password_error_text_selector
-        self.signup_link_selector = LocatorsLogin.signup_link_selector
-        self.forgot_password_link_selector = LocatorsLogin.forgot_password_link_selector
 
     def enter_username(self, username):
         self.driver.find_element_by_id(self.username_textbox_id).clear()
@@ -63,7 +49,7 @@ class LoginPage:
         return self.driver.find_element_by_css_selector(self.forgot_password_link_selector).text
 
     def need_an_account_text(self):
-        return self.driver.find_element_by_css_selector(self.account_need_selector).text
+        return self.driver.find_element_by_css_selector(self.need_account_selector).text
 
     def signup_text(self):
         return self.driver.find_element_by_css_selector(self.signup_link_selector).text
